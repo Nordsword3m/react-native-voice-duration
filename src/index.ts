@@ -105,6 +105,16 @@ class RCTVoice {
       );
     }
 
+    if ("duration" in options) {
+      Object.assign(options,
+        {
+          'EXTRA_SPEECH_INPUT_COMPLETE_SILENCE_LENGTH_MILLIS': options["duration"] as number * 1000,
+          'EXTRA_SPEECH_INPUT_POSSIBLY_COMPLETE_SILENCE_LENGTH_MILLIS': options["duration"] as number * 1000,
+        }
+      );
+      delete options["duration"];
+    }
+
     return new Promise((resolve, reject) => {
       const callback = (error: string) => {
         if (error) {

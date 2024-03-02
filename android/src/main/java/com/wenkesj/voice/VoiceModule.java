@@ -344,18 +344,23 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
 
   @Override
   public void onResults(Bundle results) {
-    WritableArray arr = Arguments.createArray();
-
     ArrayList<String> matches = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
-    if (matches != null) {
+    
+    if (matches != null && !matches.isEmpty()) {
+      WritableArray arr = Arguments.createArray();
+      
       for (String result : matches) {
         arr.pushString(result);
       }
+      
+      WritableMap event = Arguments.createMap();
+      event.putArray("value", arr); sendEvent("onSpeechResults", event);
+    } else {
+      // Handle the case where results are null or empty
+      // You can send an event or take appropriate action
+      WritableMap event = Arguments.createMap(); event.putBoolean("error", true);
+      sendEvent("onSpeechResults", event);
     }
-    WritableMap event = Arguments.createMap();
-    event.putArray("value", arr);
-    sendEvent("onSpeechResults", event);
-    Log.d("ASR", "onResults()");
   }
 
   @Override
