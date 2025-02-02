@@ -146,7 +146,7 @@ public class VoiceModule extends ReactContextBaseJavaModule implements Recogniti
 
   @Override
   public String getName() {
-    return "RCTVoice";
+    return "Voice";
   }
 
   @ReactMethod
